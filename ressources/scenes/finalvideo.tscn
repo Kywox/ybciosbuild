@@ -1,0 +1,240 @@
+[gd_scene load_steps=9 format=3 uid="uid://cis5mtltfu4dw"]
+
+[ext_resource type="AudioStream" uid="uid://wqyeu2rjmr5r" path="res://ressources/PARTY/sounds/bgm/JAZZY_JUICE_COVER.mp3" id="1_1l72j"]
+[ext_resource type="FontFile" uid="uid://cctees78nyj" path="res://ressources/chinese rocks rg.otf" id="2_5gg28"]
+[ext_resource type="FontFile" uid="uid://cagvcqhpqpbvk" path="res://ressources/Bolyfat.otf" id="3_d5ixh"]
+
+[sub_resource type="GDScript" id="GDScript_2177f"]
+resource_name = "AZERTYUIOP"
+script/source = "extends Control
+
+var id: int = -2
+
+func _ready() -> void:
+	$AnimationPlayer.play(\"jazzycovershit\")
+
+func _on_video_stream_player_finished() -> void:
+	get_tree().change_scene_to_file(\"res://ressources/PARTY/scenes/fin.tscn\")
+
+func _on_timer_timeout() -> void:
+	if id == 0:
+		$Control/what.text = \"Game Made By\"
+		$Control/names.text = \"KowyFox\"
+	elif id == 1:
+		$Control/what.text = \"Game Engine\"
+		$Control/names.text = \"Godot Engine\"
+	elif id == 2:
+		$Control/what.text = \"Extra Help\"
+		$Control/names.text = \"Walming
+		FluffyCloud\"
+	elif id == 3:
+		$Control/what.text = \"Musics\"
+		$Control/names.text = \"ESN Productions
+		cuzsie
+		Ronezkj15
+		Toby Fox
+		DM DOKURO
+		King Sammelot
+		Mike Morasky
+		Surasshu\"
+	elif id == 4:
+		$Control/what.text = \"SFX\"
+		$Control/names.text = \"pixabay.com
+		KowyFox
+		Some Other...\"
+	elif id == 5:
+		$Control/what.text = \"Apps Used\"
+		$Control/names.text = \"Aseprite
+		FL Studio
+		Paint.net
+		Blockbench
+		Convertio
+		VLC\"
+	elif id == 6:
+		$Control/what.text = \"Uhm...\"
+		$Control/names.text = \"What a sigma\"
+	elif id == 7:
+		$Control/what.text = \"Special Thanks\"
+		$Control/names.text = \"Toi\"
+	elif id == 8:
+		$Control/what.text = \"yee\"
+		$Control/names.text = \"il y a zozo qui
+		chante\"
+	elif id == 9:
+		$Control/what.text = \"Temps de travail\"
+		$Control/names.text = \"3 semaines ou plus\"
+	elif id == 10:
+		$Control/what.text = \"gazy jew\"
+		$Control/names.text = \"nede fed dog\"
+	elif id == 11:
+		$Control/what.text = \"KowyFox\"
+		$Control/names.text = \"Qui à improve
+		da programing skillz\"
+	elif id == 12:
+		$Control/what.text = \"FIdoche\"
+		$Control/names.text = \"YIEPEEEE
+		Very Real Credits\"
+	elif id == 13:
+		$Control/what.text = \"JazzyZozo!\"
+		$Control/names.text = \"YEEE
+		I DON'T WANT JAZZY JUICE\"
+	elif id == 14:
+		$Control/what.text = \"Thanks For Playing!\"
+		$Control/names.text = \"\"
+	elif id == 15:
+		$Control.visible = false
+	$Timer.start()
+	id += 1
+"
+
+[sub_resource type="VideoStreamTheora" id="VideoStreamTheora_m1k71"]
+file = "res://ressources/videos/jazzycover.ogg"
+
+[sub_resource type="Animation" id="Animation_ejetv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("JazzyJuiceCover:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(254, 59)]
+}
+
+[sub_resource type="Animation" id="Animation_xxvhy"]
+resource_name = "jazzycovershit"
+length = 158.9
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("JazzyJuiceCover:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 14.4667, 15.2667),
+"transitions": PackedFloat32Array(1, 0.353553, 1),
+"update": 0,
+"values": [Vector2(-267, 91), Vector2(-267, 91), Vector2(254, 59)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_timer_timeout"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n3q44"]
+_data = {
+"RESET": SubResource("Animation_ejetv"),
+"jazzycovershit": SubResource("Animation_xxvhy")
+}
+
+[node name="Finalvideo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_2177f")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 0
+offset_top = -3.0
+offset_right = 1920.0
+offset_bottom = 1085.0
+scale = Vector2(0.600024, 0.600024)
+stream = SubResource("VideoStreamTheora_m1k71")
+volume_db = -80.0
+autoplay = true
+
+[node name="JazzyJuiceCover" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(-23, 672)
+stream = ExtResource("1_1l72j")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n3q44")
+}
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 254.0
+offset_top = 59.0
+offset_right = 294.0
+offset_bottom = 99.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+modulate = Color(1, 1, 1, 0.352941)
+layout_mode = 0
+offset_left = -733.0
+offset_top = 15.0
+offset_right = -693.0
+offset_bottom = 55.0
+rotation = -0.36233
+scale = Vector2(18.0489, 23.4369)
+color = Color(0, 0, 0, 1)
+
+[node name="what" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -242.0
+offset_top = 34.0
+offset_right = 23.0
+offset_bottom = 101.0
+theme_override_fonts/font = ExtResource("2_5gg28")
+theme_override_font_sizes/font_size = 55
+text = "Game Made By"
+
+[node name="names" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = -242.0
+offset_top = 99.0
+offset_right = -41.0
+offset_bottom = 149.0
+theme_override_fonts/font = ExtResource("3_d5ixh")
+theme_override_font_sizes/font_size = 35
+text = "KowyFox"
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 7.385
+one_shot = true
+
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
