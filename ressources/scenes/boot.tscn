@@ -1,0 +1,307 @@
+[gd_scene load_steps=11 format=3 uid="uid://b6thgbxywm0sa"]
+
+[ext_resource type="Script" path="res://ressources/scripts/boot.gd" id="1_t1veq"]
+[ext_resource type="Texture2D" uid="uid://b4r4ht06t5x56" path="res://ressources/godotlogo.png" id="2_t10r8"]
+[ext_resource type="Texture2D" uid="uid://2ot0x2g0jfm6" path="res://ressources/WIN_20250114_19_03_23_Pro.jpg" id="3_pdxkq"]
+[ext_resource type="AudioStream" uid="uid://d3km406tf2uwe" path="res://ressources/sounds/godotintro.mp3" id="4_qkuf4"]
+[ext_resource type="AudioStream" uid="uid://d0p84l2vequ5y" path="res://ressources/sounds/zozointrooooohhh.mp3" id="5_det17"]
+[ext_resource type="AudioStream" uid="uid://dkew6bo8rkepo" path="res://ressources/sounds/bgm/Deltarune OST 1 - ANOTHER HIM.mp3" id="14_yngw0"]
+
+[sub_resource type="Animation" id="Animation_iox0t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("godot:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("zozo:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("godotauido:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("zozoohhauido:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.133333, 0.12549, 0.203922, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("text:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("text:text")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Bref... Je vais te renvoyer dans ton monde..."]
+}
+
+[sub_resource type="Animation" id="Animation_kosps"]
+resource_name = "anim"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("godot:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.766667, 4),
+"transitions": PackedFloat32Array(623486, 623486, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("zozo:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4.5, 5, 8.23333, 8.73333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("zozoohhauido:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(4.43333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("godotauido:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.0333333),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_6kyem"]
+resource_name = "death1"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.133333, 0.12549, 0.203922, 1), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("text:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("text:text")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Rebonjour, Fidy."]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"launch"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jjm1a"]
+_data = {
+"RESET": SubResource("Animation_iox0t"),
+"anim": SubResource("Animation_kosps"),
+"death1": SubResource("Animation_6kyem")
+}
+
+[node name="boot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t1veq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = -132.0
+offset_top = -61.0
+offset_right = 1267.0
+offset_bottom = 709.0
+color = Color(0.133333, 0.12549, 0.203922, 1)
+
+[node name="godotauido" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_qkuf4")
+volume_db = 18.739
+
+[node name="zozoohhauido" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_det17")
+volume_db = 18.739
+
+[node name="anim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jjm1a")
+}
+
+[node name="anotherhim" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_yngw0")
+volume_db = 6.265
+parameters/looping = true
+
+[node name="text" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -514.0
+offset_top = -5.0
+offset_right = 1045.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.646582, 0.646582)
+theme_override_font_sizes/font_size = 42
+text = "Bref... Je vais te renvoyer dans ton monde..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="responses" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -166.0
+offset_right = 64.0
+offset_bottom = -106.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.74632, 1.74632)
+
+[node name="1" type="Button" parent="responses"]
+layout_mode = 2
+text = "REPONSE 1"
+
+[node name="2" type="Button" parent="responses"]
+layout_mode = 2
+text = "REPONSE 2"
+
+[node name="godot" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 325.0
+offset_top = 45.0
+offset_right = 1349.0
+offset_bottom = 1216.0
+scale = Vector2(0.484973, 0.484973)
+texture = ExtResource("2_t10r8")
+
+[node name="zozo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 273.0
+offset_top = 46.0
+offset_right = 1553.0
+offset_bottom = 1217.0
+scale = Vector2(0.484973, 0.484973)
+texture = ExtResource("3_pdxkq")
+
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

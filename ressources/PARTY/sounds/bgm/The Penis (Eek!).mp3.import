@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://clucn23kb3rav"
+path="res://.godot/imported/The Penis (Eek!).mp3-afde27fe08ba0c948222756006489e22.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/The Penis (Eek!).mp3"
+dest_files=["res://.godot/imported/The Penis (Eek!).mp3-afde27fe08ba0c948222756006489e22.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

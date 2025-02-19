@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b8ugebj38aj0c"
+path="res://.godot/imported/Raldis Crackhouse - Its Morbin Time!.mp3-ccc49202678f453a01a6cfb13488e050.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/Raldis Crackhouse - Its Morbin Time!.mp3"
+dest_files=["res://.godot/imported/Raldis Crackhouse - Its Morbin Time!.mp3-ccc49202678f453a01a6cfb13488e050.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

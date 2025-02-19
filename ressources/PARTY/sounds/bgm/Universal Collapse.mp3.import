@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bynusqi5n88lf"
+path="res://.godot/imported/Universal Collapse.mp3-109d2078a52a96957883b3164fa20235.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/Universal Collapse.mp3"
+dest_files=["res://.godot/imported/Universal Collapse.mp3-109d2078a52a96957883b3164fa20235.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ld11iljluem1"]
+
+[ext_resource type="Script" path="res://ressources/scripts/1/music.gd" id="1_58dfw"]
+[ext_resource type="AudioStream" uid="uid://dmv8rtxkptui3" path="res://ressources/sounds/bgm/1.mp3" id="2_21sq5"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_58dfw")
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_21sq5")
+parameters/looping = true

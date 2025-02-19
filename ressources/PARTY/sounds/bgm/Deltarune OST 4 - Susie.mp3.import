@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bt3mrh6v24h0r"
+path="res://.godot/imported/Deltarune OST 4 - Susie.mp3-723a54f60d1290b6c74fc9d0622816ec.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/Deltarune OST 4 - Susie.mp3"
+dest_files=["res://.godot/imported/Deltarune OST 4 - Susie.mp3-723a54f60d1290b6c74fc9d0622816ec.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

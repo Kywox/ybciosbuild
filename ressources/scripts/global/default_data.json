@@ -1,0 +1,46 @@
+{
+	"games": {
+		"1": {
+			"star": false,
+			"levels": {
+				"1": false,
+				"2": false,
+				"3": false,
+				"4": false
+			}
+		},
+		"2": {
+			"star": false,
+			"coins": 0,
+			"upgrades": {
+				"yaxoul": 0,
+				"autoclicker": {
+					"speed": 5,
+					"give": 0
+				}
+			}
+		},
+		"3": {
+			"star": false
+		},
+		"party": {
+			"played": false,
+			"deaths": 0,
+			"lap3": false,
+			"star": false
+		}
+	},
+	"keys": {
+		"kd": false,
+		"fg": false,
+		"1": false,
+		"2": false,
+		"3": false,
+		"4": false
+	},
+	"ending": {
+		"GENOCIDE": false,
+		"PACIFIST": false,
+		"IPAD": false
+	}
+}

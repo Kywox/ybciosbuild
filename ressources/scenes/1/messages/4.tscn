@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://36f6s4dp4u57"]
+
+[ext_resource type="Script" path="res://ressources/scripts/1/messagecooldown.gd" id="1_67o32"]
+[ext_resource type="FontFile" uid="uid://80f1u61jowco" path="res://ressources/font.otf" id="2_pifvy"]
+[ext_resource type="AudioStream" uid="uid://c851m0pnu5lvv" path="res://ressources/sounds/1/nl.mp3" id="3_hy4yn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1pof1"]
+font = ExtResource("2_pifvy")
+font_size = 54
+
+[node name="4" type="Node"]
+script = ExtResource("1_67o32")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_left = -344.0
+offset_top = -186.0
+offset_right = 1506.0
+offset_bottom = 852.0
+color = Color(0.133333, 0.12549, 0.203922, 1)
+
+[node name="text" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+texture_repeat = 1
+offset_right = 1152.0
+offset_bottom = 648.0
+text = "getting harder?"
+label_settings = SubResource("LabelSettings_1pof1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 2.0
+one_shot = true
+
+[node name="audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hy4yn")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

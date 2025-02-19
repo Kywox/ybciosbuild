@@ -1,0 +1,321 @@
+[gd_scene load_steps=21 format=3 uid="uid://bx0nqx4il4rav"]
+
+[ext_resource type="Script" path="res://ressources/scripts/2/clicker.gd" id="1_gt2ny"]
+[ext_resource type="Texture2D" uid="uid://2expgqkjjcgw" path="res://ressources/yaxoul.png" id="1_swdwa"]
+[ext_resource type="Texture2D" uid="uid://daa85k7c8hycb" path="res://ressources/cubebgthing.png" id="2_j4143"]
+[ext_resource type="Texture2D" uid="uid://dn3sgrc1iq3hu" path="res://ressources/silveryaxoul.png" id="3_8nkhn"]
+[ext_resource type="Texture2D" uid="uid://b7uji5106xmyj" path="res://ressources/sprites/coins.png" id="3_q5h2a"]
+[ext_resource type="Texture2D" uid="uid://dtjfguimdrxrx" path="res://ressources/rubyyaxoul.png" id="4_mr5sf"]
+[ext_resource type="Texture2D" uid="uid://cmtoas01wf1vg" path="res://ressources/goldyaxoul.png" id="5_6at0t"]
+[ext_resource type="Texture2D" uid="uid://b7ac6ay4hymxb" path="res://ressources/emeraldyaxoul.png" id="6_08a58"]
+[ext_resource type="Texture2D" uid="uid://6iwspno6qiwn" path="res://ressources/diamondyaxoul.png" id="7_5s730"]
+[ext_resource type="AudioStream" uid="uid://dl2c0uwrvyd5v" path="res://ressources/sounds/bgm/2.mp3" id="9_au4w2"]
+[ext_resource type="Texture2D" uid="uid://c8prl2cofue41" path="res://ressources/PARTY/YaxoulClickerKEY.png" id="10_o0rxh"]
+[ext_resource type="AudioStream" uid="uid://64d71fdoa2xe" path="res://ressources/sounds/2/starbought.mp3" id="11_drna1"]
+[ext_resource type="AudioStream" uid="uid://cmvsl7nb54fm4" path="res://ressources/sounds/2/clickyaxoul.mp3" id="12_ihg2c"]
+[ext_resource type="AudioStream" uid="uid://cadbnk0m44urb" path="res://ressources/sounds/2/cash.mp3" id="13_bdh37"]
+
+[sub_resource type="Animation" id="Animation_7fbxb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.687636, 0, 0.139927, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3q8t4"]
+resource_name = "color"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 4, 6, 8, 10, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.690943, 0.0104941, 9.62615e-08, 1), Color(0.490087, 0.325604, 9.62615e-08, 1), Color(0.149136, 0.435026, 1.92523e-07, 1), Color(0, 0.416841, 0.427129, 1), Color(0, 0.373513, 0.636444, 1), Color(0.543849, 0.00129578, 0.707565, 1), Color(0.686275, 0, 0.141176, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vnhx2"]
+_data = {
+"RESET": SubResource("Animation_7fbxb"),
+"color": SubResource("Animation_3q8t4")
+}
+
+[sub_resource type="Animation" id="Animation_3omqf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(592, 230)]
+}
+
+[sub_resource type="Animation" id="Animation_4m7u6"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(536, 32), Vector2(592, 88)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wdhxp"]
+_data = {
+"RESET": SubResource("Animation_3omqf"),
+"new_animation": SubResource("Animation_4m7u6")
+}
+
+[node name="Node" type="Node"]
+script = ExtResource("1_gt2ny")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="HUD"]
+z_index = -2
+offset_left = -55.0
+offset_top = -31.0
+offset_right = 1227.0
+offset_bottom = 691.0
+color = Color(0.687636, 0, 0.139927, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/ColorRect"]
+libraries = {
+"": SubResource("AnimationLibrary_vnhx2")
+}
+
+[node name="Cubebgthing" type="Sprite2D" parent="HUD"]
+z_index = -1
+position = Vector2(592, 230)
+texture = ExtResource("2_j4143")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/Cubebgthing"]
+libraries = {
+"": SubResource("AnimationLibrary_wdhxp")
+}
+
+[node name="Yaxoul" type="TextureButton" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("1_swdwa")
+
+[node name="SilverYaxoul" type="TextureButton" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("3_8nkhn")
+
+[node name="RubyYaxoul" type="TextureButton" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("4_mr5sf")
+
+[node name="GoldYaxoul" type="TextureButton" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("5_6at0t")
+
+[node name="EmeraldYaxoul" type="TextureButton" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("6_08a58")
+
+[node name="DiamondYaxoul" type="TextureButton" parent="HUD"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.0
+offset_top = -142.0
+offset_right = -84.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.31275, 8.31275)
+texture_normal = ExtResource("7_5s730")
+
+[node name="coins" type="Label" parent="HUD"]
+offset_left = 59.0
+offset_top = 12.0
+offset_right = 2155.0
+offset_bottom = 32.0
+scale = Vector2(1.90516, 1.90516)
+text = "0"
+
+[node name="text" type="Label" parent="HUD"]
+offset_left = 857.0
+offset_top = 160.0
+offset_right = 963.0
+offset_bottom = 180.0
+scale = Vector2(1.90516, 1.90516)
+text = "Upgrades"
+
+[node name="Coins" type="Sprite2D" parent="HUD"]
+position = Vector2(29, 30)
+scale = Vector2(0.541552, 0.541552)
+texture = ExtResource("3_q5h2a")
+
+[node name="home" type="Button" parent="HUD"]
+offset_left = 4.0
+offset_top = 568.0
+offset_right = 65.0
+offset_bottom = 625.0
+scale = Vector2(1.32144, 1.32144)
+text = "Home"
+
+[node name="autoclickertime" type="Timer" parent="HUD"]
+autostart = true
+
+[node name="acspeed" type="Button" parent="HUD"]
+offset_left = 804.0
+offset_top = 229.0
+offset_right = 1103.0
+offset_bottom = 277.0
+text = "Autoclicker Speed = 5s
+NExt : $200 for 4s"
+
+[node name="acgive" type="Button" parent="HUD"]
+offset_left = 804.0
+offset_top = 287.0
+offset_right = 1103.0
+offset_bottom = 335.0
+text = "Autoclicker Give = 0
+NExt : $100 for 1"
+
+[node name="yaxoul" type="Button" parent="HUD"]
+offset_left = 782.0
+offset_top = 344.0
+offset_right = 1121.0
+offset_bottom = 392.0
+text = "Yaxoul's form = Normal
+NExt : $400 for Silver"
+
+[node name="star" type="Button" parent="HUD"]
+offset_left = 781.0
+offset_top = 409.0
+offset_right = 1927.0
+offset_bottom = 457.0
+text = "Buy star for $50000!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
+[node name="gamekey" type="TextureButton" parent="HUD"]
+visible = false
+z_index = 4
+offset_left = 1011.0
+offset_top = 506.0
+offset_right = 1107.0
+offset_bottom = 602.0
+scale = Vector2(1.41441, 1.41441)
+texture_normal = ExtResource("10_o0rxh")
+stretch_mode = 0
+
+[node name="music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_au4w2")
+autoplay = true
+parameters/looping = true
+
+[node name="Starbought" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(947, 435)
+stream = ExtResource("11_drna1")
+
+[node name="Clickyaxoul" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(589, 328)
+stream = ExtResource("12_ihg2c")
+playback_type = 1
+
+[node name="Cash" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(958, 337)
+stream = ExtResource("13_bdh37")
+
+[connection signal="pressed" from="HUD/Yaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/SilverYaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/RubyYaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/GoldYaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/EmeraldYaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/DiamondYaxoul" to="." method="_on_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/home" to="." method="_on_home_pressed"]
+[connection signal="timeout" from="HUD/autoclickertime" to="." method="_on_autoclickertime_timeout"]
+[connection signal="pressed" from="HUD/acspeed" to="." method="_on_upg_acspeed_pressed"]
+[connection signal="pressed" from="HUD/acgive" to="." method="_on_upg_acgive_pressed"]
+[connection signal="pressed" from="HUD/yaxoul" to="." method="_on_upg_yaxoul_pressed"]
+[connection signal="pressed" from="HUD/star" to="." method="_on_buystar_pressed"]
+[connection signal="pressed" from="HUD/gamekey" to="." method="_on_gamekey_pressed"]

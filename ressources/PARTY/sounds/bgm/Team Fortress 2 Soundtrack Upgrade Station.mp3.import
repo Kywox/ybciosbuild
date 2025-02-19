@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://7v5gqtwgvwud"
+path="res://.godot/imported/Team Fortress 2 Soundtrack Upgrade Station.mp3-c83bdb2134d194567d3ef4fe9ae0e1a2.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/Team Fortress 2 Soundtrack Upgrade Station.mp3"
+dest_files=["res://.godot/imported/Team Fortress 2 Soundtrack Upgrade Station.mp3-c83bdb2134d194567d3ef4fe9ae0e1a2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

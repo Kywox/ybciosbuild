@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbvxb3pj1imj5"]
+
+[ext_resource type="Texture2D" uid="uid://dlxkbd0fyafja" path="res://ressources/star.png" id="1_jcdtv"]
+
+[sub_resource type="GDScript" id="GDScript_d7fxn"]
+resource_name = "sdqsd"
+script/source = "extends Control
+
+func _on_texture_button_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://ressources/scenes/menu.tscn\")
+"
+
+[node name="Key" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_d7fxn")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = -144.0
+offset_top = -100.0
+offset_right = -104.0
+offset_bottom = -60.0
+scale = Vector2(42.8368, 26.3468)
+color = Color(0.212315, 0.223257, 0.309578, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -192.0
+offset_top = 425.0
+offset_right = 572.0
+offset_bottom = 468.0
+scale = Vector2(1.98386, 1.98386)
+text = "You won! 
+You got a key, click on it to recieve it!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 114.0
+offset_right = 506.0
+offset_bottom = 210.0
+scale = Vector2(1.53943, 1.53943)
+texture_normal = ExtResource("1_jcdtv")
+
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]

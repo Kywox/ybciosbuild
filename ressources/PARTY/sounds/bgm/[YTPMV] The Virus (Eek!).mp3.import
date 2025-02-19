@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b7g0yf3fgmdhe"
+path="res://.godot/imported/[YTPMV] The Virus (Eek!).mp3-24025ac0decf96800419890a23b7509f.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/[YTPMV] The Virus (Eek!).mp3"
+dest_files=["res://.godot/imported/[YTPMV] The Virus (Eek!).mp3-24025ac0decf96800419890a23b7509f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

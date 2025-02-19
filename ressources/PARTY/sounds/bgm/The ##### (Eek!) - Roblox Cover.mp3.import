@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dnyt5kprw0sj4"
+path="res://.godot/imported/The ##### (Eek!) - Roblox Cover.mp3-d49fa134092b555d727a3991538bc0ca.mp3str"
+
+[deps]
+
+source_file="res://ressources/PARTY/sounds/bgm/The ##### (Eek!) - Roblox Cover.mp3"
+dest_files=["res://.godot/imported/The ##### (Eek!) - Roblox Cover.mp3-d49fa134092b555d727a3991538bc0ca.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

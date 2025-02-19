@@ -1,0 +1,2257 @@
+[gd_scene load_steps=63 format=3 uid="uid://qtad6jv2ld5r"]
+
+[ext_resource type="Texture2D" uid="uid://du7n8jvgx5x8l" path="res://ressources/PARTY/Gradient.png" id="1_dswtf"]
+[ext_resource type="Texture2D" uid="uid://oaw65kfrpjeo" path="res://ressources/PARTY/BLOC.png" id="2_gvrnw"]
+[ext_resource type="Texture2D" uid="uid://bwioegi8l6iu1" path="res://ressources/PARTY/FIGHT.png" id="2_roejx"]
+[ext_resource type="Texture2D" uid="uid://kwks5drud27t" path="res://ressources/PARTY/ACT.png" id="3_gnyg0"]
+[ext_resource type="Texture2D" uid="uid://cmll1850gjseu" path="res://ressources/PARTY/SHITSSOSOS.png" id="3_mbr2m"]
+[ext_resource type="Texture2D" uid="uid://d18d0ig8j3b0f" path="res://ressources/PARTY/BK/boykifeet.jpg" id="4_2g3cl"]
+[ext_resource type="Texture2D" uid="uid://ch5fp1l61kjvi" path="res://ressources/PARTY/MERCY.png" id="4_a8b0t"]
+[ext_resource type="Texture2D" uid="uid://bv1eyvgbhmgxy" path="res://ressources/PARTY/BK/frenchkisser.png" id="5_brivj"]
+[ext_resource type="Texture2D" uid="uid://5etbafon2trh" path="res://ressources/PARTY/yaxoulsoul.png" id="6_u74ad"]
+[ext_resource type="Texture2D" uid="uid://bitg3m1jpvn2o" path="res://ressources/PARTY/BK/BOYMILK.png" id="6_w8eyh"]
+[ext_resource type="Texture2D" uid="uid://dyybegm1pvgs2" path="res://ressources/PARTY/BK/1.png" id="6_wgb4u"]
+[ext_resource type="AudioStream" uid="uid://bynusqi5n88lf" path="res://ressources/PARTY/sounds/bgm/Universal Collapse.mp3" id="7_dw4th"]
+[ext_resource type="AudioStream" uid="uid://bldfuj2s5imim" path="res://ressources/PARTY/sounds/snd_hurt1.wav" id="13_1mfas"]
+[ext_resource type="AudioStream" uid="uid://b2ipobthtmw12" path="res://ressources/PARTY/sounds/snd_item.wav" id="14_p4ex1"]
+[ext_resource type="AudioStream" uid="uid://c8lylotawn7ux" path="res://ressources/PARTY/sounds/snd_power.wav" id="15_7agjd"]
+[ext_resource type="AudioStream" uid="uid://dgp3jgsmklngr" path="res://ressources/PARTY/sounds/snd_squeak.wav" id="16_jkuga"]
+[ext_resource type="Texture2D" uid="uid://cgdkhkxululnw" path="res://ressources/MobileSupportAddon/InteractButton.png" id="17_p66fi"]
+[ext_resource type="Texture2D" uid="uid://b6ugrm0568xkw" path="res://ressources/MobileSupportAddon/InteractButtonPressing.png" id="18_7nmg7"]
+[ext_resource type="Texture2D" uid="uid://ccrh1palhsdee" path="res://ressources/MobileSupportAddon/ArrowButton.png" id="19_cfw14"]
+[ext_resource type="Texture2D" uid="uid://blykpcxgnck1h" path="res://ressources/MobileSupportAddon/ArrowButtonPressing.png" id="20_o28ra"]
+
+[sub_resource type="GDScript" id="GDScript_wrhrq"]
+resource_name = "battle"
+script/source = "extends Node
+
+# For menu control
+var posm: int = 1
+var texture_FIGHT: Texture  = preload(\"res://ressources/PARTY/FIGHT.png\")
+var texture_FIGHTh: Texture  = preload(\"res://ressources/PARTY/FIGHThover.png\")
+var texture_ACT: Texture  = preload(\"res://ressources/PARTY/ACT.png\")
+var texture_ACTh: Texture  = preload(\"res://ressources/PARTY/ACThover.png\")
+var texture_MERCY: Texture  = preload(\"res://ressources/PARTY/MERCY.png\")
+var texture_MERCYh: Texture = preload(\"res://ressources/PARTY/MERCYhover.png\")
+var state: int = 0
+var dialogue: int = 0
+
+# Gameplay
+var fight = 0
+var BKlife = 100
+var mercy = false
+
+func _ready() -> void:
+	$wait.start()
+
+func _on_wait_timeout() -> void:
+	$buttons/anim.play(\"enter\")
+
+func _process(delta: float) -> void:
+	if BKlife <= 0:
+		get_tree().change_scene_to_file(\"res://ressources/PARTY/scenes/basementP3fight.tscn\")
+	
+	if $state.text == \"menu\":
+		# INPUTS
+		if Input.is_action_just_pressed(\"undertalebattle-left\"):
+			if state == 0:
+				$move.play()
+				posm += -1
+		if Input.is_action_just_pressed(\"undertalebattle-right\"):
+			if state == 0:
+				$move.play()
+				posm += 1
+		if Input.is_action_just_pressed(\"undertalebattle-interact\"):
+			if state == 0:
+				if posm == 1:
+					$move.play()
+					$buttons/MenuController2.play(\"fightgo\")
+					$buttons/MenuController.play(\"fightshow\")
+					$buttons/anim.play(\"stop\")
+					state = 1
+				if posm == 2:
+					$move.play()
+					$buttons/MenuController.play(\"showactions\")
+					state = 2
+					posm = 1
+					$buttons/FIGHT.texture = texture_FIGHT
+					$buttons/ACT.texture = texture_ACTh
+					$buttons/MERCY.texture = texture_MERCY
+				if posm == 3:
+					$mercy.play()
+					if mercy == false:
+						$buttons/text.text = \"rien ne se passe...\"
+						$buttons/MenuController2.play(\"textshow\")
+						$buttons/anim.play(\"stop\")
+						state = 4
+					else:
+						$buttons/text.text = \"Tu épargne boykisser...\"
+						$buttons/MenuController2.play(\"textshow\")
+						$buttons/anim.play(\"stop\")
+						state = 5
+			elif state == 1:
+				if fight == 0:
+					$attack.play()
+					$buttons/MenuController2.stop()
+					$buttons/MenuController.play(\"fighthide\")
+					$buttons/MenuController2.play(\"textshow\")
+					$buttons/text.text = \"YOU MISSED! Boykisser : \" + str(BKlife)
+					state = 4
+				if fight == 1:
+					$attack.play()
+					$buttons/MenuController2.stop()
+					$buttons/MenuController.play(\"fighthide\")
+					$buttons/MenuController2.play(\"textshow\")
+					BKlife += -5
+					$buttons/text.text = \"BAD! Boykisser : \" + str(BKlife)
+					state = 4
+				if fight == 2:
+					$attack.play()
+					$buttons/MenuController2.stop()
+					$buttons/MenuController.play(\"fighthide\")
+					$buttons/MenuController2.play(\"textshow\")
+					BKlife += -10
+					$buttons/text.text = \"GOOD! Boykisser : \" + str(BKlife)
+					state = 4
+				if fight == 3:
+					$attack.play()
+					$buttons/MenuController2.stop()
+					$buttons/MenuController.play(\"fighthide\")
+					$buttons/MenuController2.play(\"textshow\")
+					BKlife += -15
+					$buttons/text.text = \"PERFECT! Boykisser : \" + str(BKlife)
+					state = 4
+			elif state == 2:
+				if posm == 1: # demande de l'aide
+					$act.play()
+					$buttons/text.text = \"Personne ne repond...\"
+					$buttons/anim.play(\"stop\")
+					state = 4
+				if posm == 2: # fuir
+					$act.play()
+					$buttons/text.text = \"Tu ne peux pas fuir...\"
+					$buttons/anim.play(\"stop\")
+					state = 4
+				if posm == 3: # insulter
+					$act.play()
+					$buttons/text.text = \"Il est pas content...\"
+					$buttons/anim.play(\"stop\")
+					state = 4
+				if posm == 4: # discuter
+					$act.play()
+					$buttons/text.text = \"Tu essaie de lui parler...\"
+					if dialogue == 0:
+						dialogue = 1
+						$buttons/text2/text3.text = \"Pourquoi tu veux pas mon bisou!\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 1:
+						dialogue = 2
+						$buttons/text2/text3.text = \"Yaxoul! S'il te plaît!\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 2:
+						dialogue = 3
+						$buttons/text2/text3.text = \"Même kowy en voulait un!\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 3:
+						dialogue = 4
+						$buttons/text2/text3.text = \"UGGGGGHHH...\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 4:
+						dialogue = 5
+						$buttons/text2/text3.text = \"tu veux pas mon cadeau?\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 5:
+						dialogue = 6
+						$buttons/text2/text3.text = \"mais...\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 6:
+						dialogue = 7
+						$buttons/text2/text3.text = \"S-S'il te plaît...\"
+						$buttons/text2/dianim.play(\"show\")
+					elif dialogue == 7:
+						dialogue = 8
+						$buttons/text2/text3.text = \"d-d'accord...\"
+						$buttons/text2/dianim.play(\"show\")
+						mercy = true
+					elif dialogue == 8:
+						$buttons/text2/text3.text = \"...\"
+						$buttons/text2/dianim.play(\"show\")
+					$buttons/anim.play(\"stop\")
+					state = 4
+				if posm == 5: # bisou
+					$act.play()
+					$buttons/text.text = \"Tu à décider de te rendre...\"
+					$buttons/anim.play(\"stop\")
+					state = 69
+					$AudioStreamPlayer.stop()
+				$buttons/MenuController.play(\"hideactions\")
+				$buttons/MenuController2.play(\"textshow\")
+			elif state == 4:
+				$move.play()
+				$buttons/MenuController2.play(\"texthide\")
+				$state.text = \"player\"
+				RandomAttack()
+			elif state == 5:
+				$move.play()
+				get_tree().change_scene_to_file(\"res://ressources/PARTY/scenes/basementP2mercy.tscn\")
+			elif state == 69:
+				$move.play()
+				$buttons/MenuController2.play(\"texthide\")
+				get_tree().change_scene_to_file(\"res://ressources/PARTY/scenes/death2.tscn\")
+		if Input.is_action_just_pressed(\"undertalebattle-up\"):
+			if state == 2:
+				$move.play()
+				posm += 1
+		if Input.is_action_just_pressed(\"undertalebattle-down\"):
+			if state == 2:
+				$move.play()
+				posm += -1
+		if Input.is_action_just_pressed(\"undertalebattle-back\"):
+			if state == 2:
+				$move.play()
+				posm = 2
+				state = 0
+				$buttons/MenuController.play(\"hideactions\")
+		
+		# VISUALS
+		if state == 0:
+			if posm == 0:
+				posm = 3
+			if posm == 1:
+				$buttons/FIGHT.texture = texture_FIGHTh
+				$buttons/ACT.texture = texture_ACT
+				$buttons/MERCY.texture = texture_MERCY
+			if posm == 2:
+				$buttons/FIGHT.texture = texture_FIGHT
+				$buttons/ACT.texture = texture_ACTh
+				$buttons/MERCY.texture = texture_MERCY
+			if posm == 3:
+				$buttons/FIGHT.texture = texture_FIGHT
+				$buttons/ACT.texture = texture_ACT
+				$buttons/MERCY.texture = texture_MERCYh
+			if posm == 4:
+				posm = 1
+		if state == 2:
+			if posm == 0:
+				posm = 5
+			if posm == 1:
+				$buttons/actions/action1.text = \"> demande de l'aide\"
+				$buttons/actions/action1.modulate = Color(1, 1, 0.376)
+				$buttons/actions/action2.text = \"fuir\"
+				$buttons/actions/action2.modulate = Color(1, 1, 1)
+				$buttons/actions/action3.text = \"insulter\"
+				$buttons/actions/action3.modulate = Color(1, 1, 1)
+				$buttons/actions/action4.text = \"discuter\"
+				$buttons/actions/action4.modulate = Color(1, 1, 1)
+				$buttons/actions/action5.text = \"bisou\"
+				$buttons/actions/action5.modulate = Color(1, 1, 1)
+			if posm == 2:
+				$buttons/actions/action1.text = \"demande de l'aide\"
+				$buttons/actions/action1.modulate = Color(1, 1, 1)
+				$buttons/actions/action2.text = \"> fuir\"
+				$buttons/actions/action2.modulate = Color(1, 1, 0.376)
+				$buttons/actions/action3.text = \"insulter\"
+				$buttons/actions/action3.modulate = Color(1, 1, 1)
+				$buttons/actions/action4.text = \"discuter\"
+				$buttons/actions/action4.modulate = Color(1, 1, 1)
+				$buttons/actions/action5.text = \"bisou\"
+				$buttons/actions/action5.modulate = Color(1, 1, 1)
+			if posm == 3:
+				$buttons/actions/action1.text = \"demande de l'aide\"
+				$buttons/actions/action1.modulate = Color(1, 1, 1)
+				$buttons/actions/action2.text = \"fuir\"
+				$buttons/actions/action2.modulate = Color(1, 1, 1)
+				$buttons/actions/action3.text = \"> insulter\"
+				$buttons/actions/action3.modulate = Color(1, 1, 0.376)
+				$buttons/actions/action4.text = \"discuter\"
+				$buttons/actions/action4.modulate = Color(1, 1, 1)
+				$buttons/actions/action5.text = \"bisou\"
+				$buttons/actions/action5.modulate = Color(1, 1, 1)
+			if posm == 4:
+				$buttons/actions/action1.text = \"demande de l'aide\"
+				$buttons/actions/action1.modulate = Color(1, 1, 1)
+				$buttons/actions/action2.text = \"fuir\"
+				$buttons/actions/action2.modulate = Color(1, 1, 1)
+				$buttons/actions/action3.text = \"insulter\"
+				$buttons/actions/action3.modulate = Color(1, 1, 1)
+				$buttons/actions/action4.text = \"> discuter\"
+				$buttons/actions/action4.modulate = Color(1, 1, 0.376)
+				$buttons/actions/action5.text = \"bisou\"
+				$buttons/actions/action5.modulate = Color(1, 1, 1)
+			if posm == 5:
+				$buttons/actions/action1.text = \"demande de l'aide\"
+				$buttons/actions/action1.modulate = Color(1, 1, 1)
+				$buttons/actions/action2.text = \"fuir\"
+				$buttons/actions/action2.modulate = Color(1, 1, 1)
+				$buttons/actions/action3.text = \"insulter\"
+				$buttons/actions/action3.modulate = Color(1, 1, 1)
+				$buttons/actions/action4.text = \"discuter\"
+				$buttons/actions/action4.modulate = Color(1, 1, 1)
+				$buttons/actions/action5.text = \"> bisou\"
+				$buttons/actions/action5.modulate = Color(1, 1, 0.376)
+			if posm == 6:
+				posm = 1
+
+func RandomAttack():
+	var random = RandomNumberGenerator.new()
+	var number = random.randi_range(1, 3)
+	if number == 1:
+		$Attacks/attacksanimator.play(\"1\")
+	if number == 2:
+		$Attacks/attacksanimator.play(\"2\")
+	if number == 3:
+		$Attacks/attacksanimator.play(\"3\")
+
+func _on_attacksanimator_animation_finished(anim_name: StringName) -> void:
+	$state.text = \"menu\"
+	$buttons/anim.play(\"enter\")
+	state = 0
+	posm = 1
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	if area.is_in_group(\"death\"):
+		get_tree().change_scene_to_file(\"res://ressources/PARTY/scenes/death2.tscn\")
+
+func _on_FIGHTGOmiss_animation_finished(anim_name: StringName) -> void:
+	if anim_name == \"fightgo\":
+		$buttons/MenuController2.stop()
+		$buttons/MenuController.play(\"fighthide\")
+		$buttons/MenuController2.play(\"textshow\")
+		$buttons/text.text = \"YOU MISSED! Boykisser : \" + str(BKlife)
+		state = 4
+
+func _on_area_2dfght_area_entered(area: Area2D) -> void:
+	if area.is_in_group(\"fight1\"):
+		fight = 1
+	if area.is_in_group(\"fight2\"):
+		fight = 2
+	if area.is_in_group(\"fight3\"):
+		fight = 3
+
+func _on_area_2dFGHT_area_exited(area: Area2D) -> void:
+	if area.is_in_group(\"fight1\"):
+		fight = 0
+	if area.is_in_group(\"fight2\"):
+		fight = 1
+	if area.is_in_group(\"fight3\"):
+		fight = 2
+"
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_61cfs"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(100, 1, 1)
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, -100, 0)
+spread = 5.0
+initial_velocity_min = 64.52
+initial_velocity_max = 64.52
+gravity = Vector3(0, 0, 0)
+scale_min = 0.25
+scale_max = 0.5
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+
+[sub_resource type="Animation" id="Animation_h4skh"]
+resource_name = "1"
+length = 13.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boykifeet:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 5, 9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1236, 398), Vector2(-100, 398), Vector2(-100, 567), Vector2(1236, 567)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Boykifeet2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 5, 6, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-100, 567), Vector2(1236, 567), Vector2(1236, 398), Vector2(-100, 398)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Boykifeet3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2, 6, 7, 11),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1236, 398), Vector2(-100, 398), Vector2(-100, 567), Vector2(1236, 567)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Boykifeet4:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3, 7, 8, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-100, 567), Vector2(1236, 567), Vector2(1236, 398), Vector2(-100, 398)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Boykifeet5:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(4, 8, 9, 13),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1236, 398), Vector2(-100, 398), Vector2(-100, 567), Vector2(1236, 567)]
+}
+
+[sub_resource type="Animation" id="Animation_weno0"]
+resource_name = "2"
+length = 12.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Frenchkisser:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(382, 735), Vector2(382, -81)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Frenchkisser2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(588, 734), Vector2(588, -86)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Frenchkisser3:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(7, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(787, 735), Vector2(787, -87)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Frenchkisser4:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(687, 887), Vector2(687, -81)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Frenchkisser5:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(9, 12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(484, 894), Vector2(484, -92)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Frenchkisser6:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(5, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(373.385, -235.158), Vector2(373.385, 739)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Frenchkisser7:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(8, 11),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(579.385, -236.158), Vector2(579.385, 750)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Frenchkisser8:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(778.385, -235.158), Vector2(778.385, 729)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Frenchkisser9:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(6, 9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(678.385, -83.1583), Vector2(678.385, 723)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Frenchkisser10:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(4, 7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(475.385, -76.1583), Vector2(475.385, 736)]
+}
+
+[sub_resource type="Animation" id="Animation_jastw"]
+resource_name = "3"
+length = 13.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boymilk:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 3, 3.5, 3.63333, 3.8, 4, 4.5, 6.5, 7, 9.5, 9.76667, 10, 12.5, 13),
+"transitions": PackedFloat32Array(0.297302, 1, 2.37841, 1, 1, 1, 0.297302, 1, 1, 1, 1, 1, 1, 1.93187, 1),
+"update": 0,
+"values": [Vector2(1323, 301), Vector2(1016, 369), Vector2(1016, 369), Vector2(1335, 247), Vector2(1325, 818), Vector2(-142, 793), Vector2(-152, 210), Vector2(133, 283), Vector2(133, 283), Vector2(143, 505), Vector2(143, 505), Vector2(157, 129), Vector2(648, 149), Vector2(648, 149), Vector2(644, -126)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Boymilk/blastshit:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2.5, 4, 5, 6.5, 7.5, 9, 10.5, 12),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, false, true, false, true, false, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Boymilk:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5, 4, 6.5, 7, 9.5, 10, 12.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.21279, 1.21279, -0.983792, -0.983792, -1.64127, -1.64127, 0.222354, 0.222354]
+}
+
+[sub_resource type="Animation" id="Animation_8rnk1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boykifeet:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1236, 398)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Frenchkisser:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(382, 735)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Frenchkisser8:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(778.385, -235.158)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Frenchkisser2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(588, 734)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Frenchkisser4:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(687, 887)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Frenchkisser10:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(475.385, -76.1583)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Frenchkisser6:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(373.385, -235.158)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Frenchkisser9:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(678.385, -83.1583)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Frenchkisser3:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(787, 735)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Frenchkisser7:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(579.385, -236.158)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Frenchkisser5:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(484, 894)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Boymilk:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1323, 301)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Boymilk/blastshit:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Boymilk:rotation")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.21279]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7ho8s"]
+_data = {
+"1": SubResource("Animation_h4skh"),
+"2": SubResource("Animation_weno0"),
+"3": SubResource("Animation_jastw"),
+"RESET": SubResource("Animation_8rnk1")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_amddw"]
+size = Vector2(225.876, 225.876)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w1mjb"]
+size = Vector2(780.446, 797.498)
+
+[sub_resource type="GDScript" id="GDScript_3wbo4"]
+resource_name = "Boymilkshit"
+script/source = "extends Sprite2D
+
+func _process(delta: float) -> void:
+	if $blastshit.visible == false:
+		$blastshit/Area2D2/CollisionShape2D.disabled = true
+	else:
+		$blastshit/Area2D2/CollisionShape2D.disabled = false
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j05bq"]
+size = Vector2(77.3643, 77.3645)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5q8sa"]
+size = Vector2(592, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s6ay4"]
+size = Vector2(16, 256)
+
+[sub_resource type="Animation" id="Animation_yckfc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 176)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Visuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../TextureRect:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(400, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../player/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../player/caninput:text")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["false"]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("text2:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(9.69769, 141.309)]
+}
+
+[sub_resource type="Animation" id="Animation_flv41"]
+resource_name = "enter"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.170755, 1),
+"update": 0,
+"values": [Vector2(0, 272), Vector2(0, 176)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Visuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(4, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 320)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../TextureRect:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(3.03143, 1),
+"update": 0,
+"values": [Vector2(400, 0), Vector2(400, 120)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.266667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../player/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../player/caninput:text")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["false"]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("text2:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.450625, 1),
+"update": 0,
+"values": [Vector2(16.6246, 13.8538), Vector2(16.625, 365.742)]
+}
+
+[sub_resource type="Animation" id="Animation_h3632"]
+resource_name = "stop"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.406126, 0.170755),
+"update": 0,
+"values": [Vector2(0, 176), Vector2(0, 272)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Visuals:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.176777, 4),
+"update": 0,
+"values": [Vector2(0, 320), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../TextureRect:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.129408, 3.03143),
+"update": 0,
+"values": [Vector2(400, 120), Vector2(400, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../player/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../player:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../player/caninput:text")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["true"]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("text2:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.196146, 1),
+"update": 0,
+"values": [Vector2(16.625, 365.742), Vector2(16.6246, 13.8538)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5keei"]
+_data = {
+"RESET": SubResource("Animation_yckfc"),
+"enter": SubResource("Animation_flv41"),
+"stop": SubResource("Animation_h3632")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i4rr3"]
+size = Vector2(317.253, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ni7bx"]
+size = Vector2(170.402, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jfe7m"]
+size = Vector2(33.2492, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c3fov"]
+size = Vector2(6.92692, 120.529)
+
+[sub_resource type="Animation" id="Animation_sinlg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../actions:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../fights/player:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pwkgq"]
+resource_name = "fightgo"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../fights/player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(637.277, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j4c85"]
+resource_name = "fighthide"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../fights:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3pp50"]
+resource_name = "fightshow"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../fights:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_jupg5"]
+resource_name = "hideactions"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../actions:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_22ygd"]
+resource_name = "showactions"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../actions:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_obox8"]
+resource_name = "texthide"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_kh01x"]
+resource_name = "textshow"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4xea6"]
+_data = {
+"RESET": SubResource("Animation_sinlg"),
+"fightgo": SubResource("Animation_pwkgq"),
+"fighthide": SubResource("Animation_j4c85"),
+"fightshow": SubResource("Animation_3pp50"),
+"hideactions": SubResource("Animation_jupg5"),
+"showactions": SubResource("Animation_22ygd"),
+"texthide": SubResource("Animation_obox8"),
+"textshow": SubResource("Animation_kh01x")
+}
+
+[sub_resource type="Animation" id="Animation_l85ei"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yw1hv"]
+resource_name = "show"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 9.5, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wdtj6"]
+_data = {
+"RESET": SubResource("Animation_l85ei"),
+"show": SubResource("Animation_yw1hv")
+}
+
+[sub_resource type="GDScript" id="GDScript_rtr4g"]
+resource_name = "plr"
+script/source = "extends CharacterBody2D
+
+var input_vector_x: int = 0
+var input_vector_y: int = 0
+var plrx: int = 0
+var plry: int = 0
+var speed: int = 20000
+
+func _physics_process(delta: float) -> void:
+	if $caninput.text == \"true\":
+		if Input.is_action_pressed(\"undertalebattle-slow\"):
+			speed = 15000
+		else:
+			speed = 20000
+		
+		input_vector_x = Input.get_action_strength(\"1-right\") - Input.get_action_strength(\"1-left\")
+		input_vector_y = Input.get_action_strength(\"1-down\") - Input.get_action_strength(\"1-up\")
+		if input_vector_y == 0:
+			if input_vector_x < 0:
+				plrx = -1
+				plry = 0
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x > 0:
+				plrx = 1
+				plry = 0
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x == 0:
+				plrx = 0
+				plry = 0
+				self.velocity = Vector2(plrx, plry)*delta*speed
+		elif input_vector_y > 0:
+			if input_vector_x < 0:
+				plrx = -1
+				plry = 1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x > 0:
+				plrx = 1
+				plry = 1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x == 0:
+				plrx = 0
+				plry = 1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+		elif input_vector_y < 0:
+			if input_vector_x < 0:
+				plrx = -1
+				plry = -1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x > 0:
+				plrx = 1
+				plry = -1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+			if input_vector_x == 0:
+				plrx = 0
+				plry = -1
+				self.velocity = Vector2(plrx, plry)*delta*speed
+	else:
+		plrx = 0
+		plry = 0
+		self.velocity = Vector2(plrx, plry)*delta*speed
+	move_and_slide()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dwooe"]
+size = Vector2(16, 16)
+
+[sub_resource type="GDScript" id="GDScript_bffhm"]
+resource_name = "intro"
+script/source = "extends Camera2D
+
+var a: int = 1
+
+func _ready() -> void:
+	$Label.text = \" \"
+	$Timer.start(5.5)
+
+func _on_timer_timeout() -> void:
+	if a == 1:
+		a = 2
+		$anim.play(\"s\")
+		$Label.text = \"ARE           \"
+		$Timer.start(0.5)
+	elif a == 2:
+		a = 3
+		$Label.text = \"ARE YOU       \"
+		$Timer.start(0.5)
+	elif a == 3:
+		a = 4
+		$Label.text = \"ARE YOU READY?\"
+		$Timer.start(1)
+	elif a == 4:
+		$anim.play(\"start\")
+		a = 5
+		$Timer.start(2)
+	elif a == 5:
+		$\"..\"/state.text = \"menu\"
+"
+
+[sub_resource type="Animation" id="Animation_xdypd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../ColorRect2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ColorRect2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ColorRect:color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_wf4yk"]
+resource_name = "s"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.129558, 0.129558, 0.129558, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_tnvon"]
+resource_name = "start"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ColorRect2:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ColorRect2:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uungf"]
+_data = {
+"RESET": SubResource("Animation_xdypd"),
+"s": SubResource("Animation_wf4yk"),
+"start": SubResource("Animation_tnvon")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dpln"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tknvm"]
+size = Vector2(32, 32)
+
+[node name="battle" type="Node"]
+script = SubResource("GDScript_wrhrq")
+
+[node name="BGCOLOR" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1160.0
+offset_bottom = 656.0
+color = Color(0, 0, 0, 1)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(576, 656)
+scale = Vector2(5.92304, 6.54818)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_61cfs")
+texture = ExtResource("2_gvrnw")
+lifetime = 2.0
+fixed_fps = 60
+trail_lifetime = 0.01
+trail_sections = 2
+trail_section_subdivisions = 1
+
+[node name="gradient" type="TextureRect" parent="."]
+modulate = Color(1, 0.64, 0.928, 0.243137)
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 1160.0
+offset_bottom = 656.0
+texture = ExtResource("1_dswtf")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 400.0
+offset_right = 440.0
+offset_bottom = 40.0
+scale = Vector2(8.40561, 8.40561)
+texture = ExtResource("3_mbr2m")
+
+[node name="state" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 20.0
+text = "none"
+
+[node name="Attacks" type="Node" parent="."]
+
+[node name="attacksanimator" type="AnimationPlayer" parent="Attacks"]
+libraries = {
+"": SubResource("AnimationLibrary_7ho8s")
+}
+
+[node name="Boykifeet" type="Sprite2D" parent="Attacks"]
+position = Vector2(1236, 398)
+scale = Vector2(0.649302, 0.649302)
+texture = ExtResource("4_2g3cl")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Boykifeet" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boykifeet/Area2D"]
+shape = SubResource("RectangleShape2D_amddw")
+
+[node name="Boykifeet2" type="Sprite2D" parent="Attacks"]
+position = Vector2(-100, 567)
+scale = Vector2(0.649302, 0.649302)
+texture = ExtResource("4_2g3cl")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Boykifeet2" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boykifeet2/Area2D"]
+shape = SubResource("RectangleShape2D_amddw")
+
+[node name="Boykifeet3" type="Sprite2D" parent="Attacks"]
+position = Vector2(1236, 398)
+scale = Vector2(0.649302, 0.649302)
+texture = ExtResource("4_2g3cl")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Boykifeet3" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boykifeet3/Area2D"]
+shape = SubResource("RectangleShape2D_amddw")
+
+[node name="Boykifeet4" type="Sprite2D" parent="Attacks"]
+position = Vector2(-100, 567)
+scale = Vector2(0.649302, 0.649302)
+texture = ExtResource("4_2g3cl")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Boykifeet4" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boykifeet4/Area2D"]
+shape = SubResource("RectangleShape2D_amddw")
+
+[node name="Boykifeet5" type="Sprite2D" parent="Attacks"]
+position = Vector2(1236, 398)
+scale = Vector2(0.649302, 0.649302)
+texture = ExtResource("4_2g3cl")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Boykifeet5" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boykifeet5/Area2D"]
+shape = SubResource("RectangleShape2D_amddw")
+
+[node name="Frenchkisser" type="Sprite2D" parent="Attacks"]
+position = Vector2(382, 735)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser2" type="Sprite2D" parent="Attacks"]
+position = Vector2(588, 734)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser2" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser2/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser3" type="Sprite2D" parent="Attacks"]
+position = Vector2(787, 735)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser3" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser3/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser4" type="Sprite2D" parent="Attacks"]
+position = Vector2(687, 887)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser4" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser4/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser5" type="Sprite2D" parent="Attacks"]
+position = Vector2(484, 894)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser5" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser5/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser6" type="Sprite2D" parent="Attacks"]
+position = Vector2(373.385, -235.158)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser6" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser6/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser7" type="Sprite2D" parent="Attacks"]
+position = Vector2(579.385, -236.158)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser7" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser7/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser8" type="Sprite2D" parent="Attacks"]
+position = Vector2(778.385, -235.158)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser8" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser8/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser9" type="Sprite2D" parent="Attacks"]
+position = Vector2(678.385, -83.1583)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser9" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser9/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Frenchkisser10" type="Sprite2D" parent="Attacks"]
+position = Vector2(475.385, -76.1583)
+scale = Vector2(0.180962, 0.180962)
+texture = ExtResource("5_brivj")
+
+[node name="Area2D" type="Area2D" parent="Attacks/Frenchkisser10" groups=["death"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Frenchkisser10/Area2D"]
+shape = SubResource("RectangleShape2D_w1mjb")
+
+[node name="Boymilk" type="Sprite2D" parent="Attacks"]
+position = Vector2(1323, 301)
+rotation = 1.21279
+scale = Vector2(0.352793, 0.352793)
+texture = ExtResource("6_w8eyh")
+script = SubResource("GDScript_3wbo4")
+
+[node name="blastshit" type="ColorRect" parent="Attacks/Boymilk"]
+visible = false
+offset_left = -153.064
+offset_top = 221.093
+offset_right = -113.064
+offset_bottom = 261.093
+scale = Vector2(7.99362, 272.558)
+
+[node name="Area2D2" type="Area2D" parent="Attacks/Boymilk/blastshit" groups=["death"]]
+position = Vector2(19.8416, 19.8417)
+scale = Vector2(0.51294, 0.51294)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attacks/Boymilk/blastshit/Area2D2"]
+shape = SubResource("RectangleShape2D_j05bq")
+
+[node name="Visuals" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect2" type="ColorRect" parent="Visuals"]
+layout_mode = 0
+offset_left = 296.0
+offset_top = 608.0
+offset_right = 856.0
+offset_bottom = 624.0
+
+[node name="ColorRect5" type="ColorRect" parent="Visuals"]
+layout_mode = 0
+offset_left = 296.0
+offset_top = 336.0
+offset_right = 856.0
+offset_bottom = 352.0
+
+[node name="ColorRect3" type="ColorRect" parent="Visuals"]
+layout_mode = 0
+offset_left = 280.0
+offset_top = 336.0
+offset_right = 296.0
+offset_bottom = 624.0
+
+[node name="ColorRect4" type="ColorRect" parent="Visuals"]
+layout_mode = 0
+offset_left = 856.0
+offset_top = 336.0
+offset_right = 872.0
+offset_bottom = 624.0
+
+[node name="box" type="StaticBody2D" parent="Visuals"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Visuals/box"]
+position = Vector2(576, 344)
+shape = SubResource("RectangleShape2D_5q8sa")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Visuals/box"]
+position = Vector2(288, 480)
+shape = SubResource("RectangleShape2D_s6ay4")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Visuals/box"]
+position = Vector2(864, 480)
+shape = SubResource("RectangleShape2D_s6ay4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Visuals/box"]
+position = Vector2(576, 616)
+shape = SubResource("RectangleShape2D_5q8sa")
+
+[node name="buttons" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 176.0
+offset_right = 40.0
+offset_bottom = 216.0
+scale = Vector2(0.721821, 0.721821)
+
+[node name="ColorRect" type="ColorRect" parent="buttons"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 536.0
+offset_right = 848.0
+offset_bottom = 656.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="buttons"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 528.0
+offset_right = 848.0
+offset_bottom = 536.0
+
+[node name="ColorRect3" type="ColorRect" parent="buttons"]
+layout_mode = 0
+offset_left = 848.0
+offset_top = 528.0
+offset_right = 856.0
+offset_bottom = 656.0
+
+[node name="FIGHT" type="TextureRect" parent="buttons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 544.0
+offset_right = 283.0
+offset_bottom = 644.0
+texture = ExtResource("2_roejx")
+
+[node name="ACT" type="TextureRect" parent="buttons"]
+layout_mode = 0
+offset_left = 288.0
+offset_top = 544.0
+offset_right = 563.0
+offset_bottom = 644.0
+texture = ExtResource("3_gnyg0")
+
+[node name="MERCY" type="TextureRect" parent="buttons"]
+layout_mode = 0
+offset_left = 568.0
+offset_top = 544.0
+offset_right = 843.0
+offset_bottom = 644.0
+texture = ExtResource("4_a8b0t")
+
+[node name="anim" type="AnimationPlayer" parent="buttons"]
+libraries = {
+"": SubResource("AnimationLibrary_5keei")
+}
+
+[node name="text" type="Label" parent="buttons"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 11.0831
+offset_top = 487.655
+offset_right = 250.083
+offset_bottom = 507.655
+scale = Vector2(1.66461, 1.66461)
+text = "Nothing happens..."
+
+[node name="text3" type="Label" parent="buttons/text"]
+modulate = Color(1, 0.65098, 1, 1)
+layout_mode = 0
+offset_left = -1.66453
+offset_top = -30.7932
+offset_right = 237.335
+offset_bottom = -10.7932
+scale = Vector2(1.66461, 1.66461)
+text = "E to continue"
+
+[node name="actions" type="Control" parent="buttons"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="action1" type="Label" parent="buttons/actions"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 488.0
+offset_right = 364.0
+offset_bottom = 508.0
+scale = Vector2(1.66461, 1.66461)
+text = "demande de l'aide"
+
+[node name="action2" type="Label" parent="buttons/actions"]
+layout_mode = 0
+offset_left = 11.0831
+offset_top = 454.406
+offset_right = 364.083
+offset_bottom = 474.406
+scale = Vector2(1.66461, 1.66461)
+text = "fuir"
+
+[node name="action3" type="Label" parent="buttons/actions"]
+layout_mode = 0
+offset_left = 11.0831
+offset_top = 421.157
+offset_right = 364.083
+offset_bottom = 441.157
+scale = Vector2(1.66461, 1.66461)
+text = "insulter"
+
+[node name="action4" type="Label" parent="buttons/actions"]
+layout_mode = 0
+offset_left = 11.0831
+offset_top = 387.908
+offset_right = 364.083
+offset_bottom = 407.908
+scale = Vector2(1.66461, 1.66461)
+text = "discuter"
+
+[node name="action5" type="Label" parent="buttons/actions"]
+modulate = Color(1, 1, 0.376471, 1)
+layout_mode = 0
+offset_left = 11.0831
+offset_top = 354.659
+offset_right = 364.083
+offset_bottom = 374.659
+scale = Vector2(1.66461, 1.66461)
+text = "bisou"
+
+[node name="fights" type="Control" parent="buttons"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect4" type="ColorRect" parent="buttons/fights"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 407.0
+offset_right = 630.0
+offset_bottom = 528.0
+color = Color(0, 0, 0, 1)
+
+[node name="paint" type="Control" parent="buttons/fights"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="color3" type="ColorRect" parent="buttons/fights/paint"]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 407.0
+offset_right = 474.0
+offset_bottom = 528.0
+color = Color(1, 0.21, 0.21, 1)
+
+[node name="Area2D4" type="Area2D" parent="buttons/fights/paint/color3" groups=["fight1"]]
+position = Vector2(158.868, 59.8737)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="buttons/fights/paint/color3/Area2D4"]
+position = Vector2(-0.69278, 0.692688)
+shape = SubResource("RectangleShape2D_i4rr3")
+
+[node name="color2" type="ColorRect" parent="buttons/fights/paint"]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 407.0
+offset_right = 401.0
+offset_bottom = 528.0
+color = Color(1, 0.697167, 0.21, 1)
+
+[node name="Area2D3" type="Area2D" parent="buttons/fights/paint/color2" groups=["fight2"]]
+position = Vector2(85.8678, 59.8737)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="buttons/fights/paint/color2/Area2D3"]
+position = Vector2(-0.692719, 0.692688)
+shape = SubResource("RectangleShape2D_ni7bx")
+
+[node name="color" type="ColorRect" parent="buttons/fights/paint"]
+layout_mode = 0
+offset_left = 298.0
+offset_top = 407.0
+offset_right = 331.0
+offset_bottom = 528.0
+color = Color(0.285, 1, 0.22, 1)
+
+[node name="Area2D2" type="Area2D" parent="buttons/fights/paint/color" groups=["fight3"]]
+position = Vector2(17.8678, 59.8737)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="buttons/fights/paint/color/Area2D2"]
+position = Vector2(-1.38541, 0.692688)
+shape = SubResource("RectangleShape2D_jfe7m")
+
+[node name="player" type="Control" parent="buttons/fights"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PLAYER2" type="ColorRect" parent="buttons/fights/player"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 407.0
+offset_bottom = 528.0
+color = Color(0.587797, 0.368927, 1.2514e-06, 1)
+
+[node name="PLAYER" type="ColorRect" parent="buttons/fights/player"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = 407.0
+offset_right = -0.999999
+offset_bottom = 528.0
+color = Color(1, 0.7255, 0.39, 1)
+
+[node name="Area2D" type="Area2D" parent="buttons/fights/player"]
+position = Vector2(-4.15615, 466.874)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="buttons/fights/player/Area2D"]
+position = Vector2(-0.692693, 0.692688)
+shape = SubResource("RectangleShape2D_c3fov")
+
+[node name="ColorRect5" type="ColorRect" parent="buttons/fights"]
+layout_mode = 0
+offset_left = -8.31231
+offset_top = 397.605
+offset_right = 629.688
+offset_bottom = 406.605
+
+[node name="ColorRect6" type="ColorRect" parent="buttons/fights"]
+layout_mode = 0
+offset_left = 630.0
+offset_top = 398.0
+offset_right = 638.0
+offset_bottom = 529.0
+
+[node name="MenuController" type="AnimationPlayer" parent="buttons"]
+root_node = NodePath("../text")
+libraries = {
+"": SubResource("AnimationLibrary_4xea6")
+}
+
+[node name="MenuController2" type="AnimationPlayer" parent="buttons"]
+root_node = NodePath("../text")
+libraries = {
+"": SubResource("AnimationLibrary_4xea6")
+}
+
+[node name="text2" type="Control" parent="buttons"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 9.69769
+offset_top = 141.309
+offset_right = 49.6977
+offset_bottom = 181.309
+
+[node name="ColorRect" type="ColorRect" parent="buttons/text2"]
+layout_mode = 0
+offset_left = 1039.04
+offset_top = -299.243
+offset_right = 1090.04
+offset_bottom = -232.243
+scale = Vector2(10.131, 3.88156)
+
+[node name="text3" type="Label" parent="buttons/text2"]
+layout_mode = 0
+offset_left = 1058.0
+offset_top = -281.0
+offset_right = 1344.0
+offset_bottom = -148.0
+scale = Vector2(1.66461, 1.66461)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "LAISSE MOI!"
+autowrap_mode = 2
+
+[node name="dianim" type="AnimationPlayer" parent="buttons/text2"]
+libraries = {
+"": SubResource("AnimationLibrary_wdtj6")
+}
+
+[node name="player" type="CharacterBody2D" parent="."]
+position = Vector2(576, 488)
+scale = Vector2(1.98335, 1.98335)
+script = SubResource("GDScript_rtr4g")
+
+[node name="Sprite2D" type="Sprite2D" parent="player"]
+texture = ExtResource("6_u74ad")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
+shape = SubResource("RectangleShape2D_dwooe")
+
+[node name="caninput" type="Label" parent="player"]
+visible = false
+offset_left = -290.418
+offset_top = -246.048
+offset_right = -250.418
+offset_bottom = -226.048
+text = "false"
+
+[node name="Area2D" type="Area2D" parent="player"]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="player/Area2D"]
+shape = SubResource("RectangleShape2D_dwooe")
+
+[node name="Intro" type="Camera2D" parent="."]
+position = Vector2(568, -760)
+script = SubResource("GDScript_bffhm")
+
+[node name="ColorRect" type="ColorRect" parent="Intro"]
+offset_left = -576.0
+offset_top = -328.0
+offset_right = 584.0
+offset_bottom = 328.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Intro"]
+offset_left = -280.0
+offset_top = 120.0
+offset_right = -94.0
+offset_bottom = 140.0
+scale = Vector2(2.90882, 2.90882)
+text = " "
+
+[node name="Timer" type="Timer" parent="Intro"]
+process_callback = 0
+wait_time = 0.5
+one_shot = true
+
+[node name="anim" type="AnimationPlayer" parent="Intro"]
+libraries = {
+"": SubResource("AnimationLibrary_uungf")
+}
+
+[node name="TextureRect" type="TextureRect" parent="Intro"]
+modulate = Color(0, 0, 0, 1)
+offset_left = -208.0
+offset_top = -280.0
+offset_right = 193.0
+offset_bottom = 121.0
+texture = ExtResource("6_wgb4u")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_left = -240.0
+offset_top = -1184.0
+offset_right = 1336.0
+offset_bottom = 792.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_dw4th")
+autoplay = true
+parameters/looping = true
+
+[node name="attack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_1mfas")
+
+[node name="act" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_p4ex1")
+
+[node name="mercy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_7agjd")
+
+[node name="move" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_jkuga")
+
+[node name="wait" type="Timer" parent="."]
+process_callback = 0
+wait_time = 9.5
+one_shot = true
+
+[node name="MOBILE" type="CanvasLayer" parent="."]
+
+[node name="interact" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(1024, 230)
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("17_p66fi")
+texture_pressed = ExtResource("18_7nmg7")
+shape = SubResource("RectangleShape2D_7dpln")
+passby_press = true
+action = "interact"
+
+[node name="left" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(126, 521)
+rotation = 3.14159
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-left"
+
+[node name="right" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(242, 436)
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-right"
+
+[node name="down" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(226, 539)
+rotation = 1.5708
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-down"
+
+[node name="up" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(143, 420)
+rotation = -1.5708
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-up"
+
+[node name="left2" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(903.409, 519.409)
+rotation = 3.14159
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-left"
+
+[node name="right2" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(1019.41, 434.409)
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-right"
+
+[node name="down2" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(1003.41, 537.409)
+rotation = 1.5708
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-down"
+
+[node name="up2" type="TouchScreenButton" parent="MOBILE"]
+position = Vector2(920.409, 418.409)
+rotation = -1.5708
+scale = Vector2(2.60652, 2.60652)
+texture_normal = ExtResource("19_cfw14")
+texture_pressed = ExtResource("20_o28ra")
+shape = SubResource("RectangleShape2D_tknvm")
+passby_press = true
+action = "1-up"
+
+[connection signal="animation_finished" from="Attacks/attacksanimator" to="." method="_on_attacksanimator_animation_finished"]
+[connection signal="area_entered" from="buttons/fights/player/Area2D" to="." method="_on_area_2dfght_area_entered"]
+[connection signal="area_exited" from="buttons/fights/player/Area2D" to="." method="_on_area_2dFGHT_area_exited"]
+[connection signal="animation_finished" from="buttons/MenuController2" to="." method="_on_FIGHTGOmiss_animation_finished"]
+[connection signal="area_entered" from="player/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="Intro/Timer" to="Intro" method="_on_timer_timeout"]
+[connection signal="timeout" from="wait" to="." method="_on_wait_timeout"]

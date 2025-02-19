@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://den1ueb12oorg"]
+
+[ext_resource type="AudioStream" uid="uid://ci0npejt1swd6" path="res://ressources/PARTY/sounds/fidywillhaveabadtimetoforgetthissound.mp3" id="1_4qopv"]
+[ext_resource type="Texture2D" uid="uid://c7atc0k3pbgtx" path="res://ressources/PARTY/bk.png" id="2_nr1nx"]
+
+[sub_resource type="GDScript" id="GDScript_ufnqa"]
+resource_name = "ezfzfezfze"
+script/source = "extends AudioStreamPlayer
+
+func _ready() -> void:
+	var save = SD.read_save()
+	save[\"games\"][\"party\"][\"deaths\"] = save[\"games\"][\"party\"][\"deaths\"] + 1
+	SD.write_save(save)
+
+func _on_finished() -> void:
+	get_tree().quit()
+"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_4qopv")
+autoplay = true
+script = SubResource("GDScript_ufnqa")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -53.0
+offset_top = -495.0
+offset_right = 1246.0
+offset_bottom = 794.0
+texture = ExtResource("2_nr1nx")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

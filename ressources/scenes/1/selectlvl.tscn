@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsoxl3qll5inp"]
+
+[ext_resource type="Script" path="res://ressources/scripts/1/selectlvl.gd" id="1_odd8k"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_odd8k")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -5
+layout_mode = 0
+offset_left = -230.0
+offset_top = -136.0
+offset_right = 1357.0
+offset_bottom = 774.0
+color = Color(0.34698, 0.00134554, 0.814874, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+z_index = -5
+layout_mode = 0
+offset_left = -244.0
+offset_top = -114.0
+offset_right = 1343.0
+offset_bottom = 83.0
+color = Color(0.191932, 0.000408438, 0.479357, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 14.0
+offset_right = 574.0
+offset_bottom = 34.0
+scale = Vector2(2.37164, 2.37164)
+text = "Levels"
+
+[node name="levels" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 181.0
+offset_top = 299.0
+offset_right = 450.0
+offset_bottom = 460.0
+scale = Vector2(3.01902, 3.01902)
+columns = 5
+
+[node name="Button" type="Button" parent="levels"]
+layout_mode = 2
+text = "[1]"
+
+[node name="Button2" type="Button" parent="levels"]
+layout_mode = 2
+text = "[2]"
+
+[node name="Button3" type="Button" parent="levels"]
+layout_mode = 2
+text = "[3]"
+
+[node name="Button4" type="Button" parent="levels"]
+layout_mode = 2
+text = "[4]"
+
+[node name="Button5" type="Button" parent="levels"]
+layout_mode = 2
+text = "[5]"
+
+[node name="back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 11.0
+offset_right = 82.0
+offset_bottom = 39.0
+scale = Vector2(2.27359, 2.27359)
+text = "Back"
+flat = true
+
+[connection signal="pressed" from="levels/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="levels/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="levels/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="levels/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="levels/Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="back" to="." method="_on_back_pressed"]

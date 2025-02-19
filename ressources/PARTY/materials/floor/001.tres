@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://4bf5u7asmxgv"]
+
+[ext_resource type="Texture2D" uid="uid://cwh28m4miggp0" path="res://ressources/PARTY/textures/floor/001.png" id="1_w314d"]
+
+[resource]
+albedo_texture = ExtResource("1_w314d")
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
